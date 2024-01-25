@@ -1,1 +1,25 @@
+# Test Plan Doctor - requirements.txt
+
+# This file lists all the Python libraries that are required for the Test Plan Doctor project.
+# These libraries are necessary for the AI-powered analysis and enhancement of QA test plans.
+
+# To install these dependencies, run: pip install -r requirements.txt
+
+# Core Libraries for AI and Natural Language Processing
+numpy==1.22.0          # NumPy is used for numerical operations
+pandas==1.4.1          # Pandas for data manipulation and analysis
+nltk==3.7              # NLTK is a leading platform for building Python programs to work with human language data
+
+# Machine Learning Libraries
+scikit-learn==1.0.2    # Scikit-learn for machine learning algorithms
+transformers==4.18.0   # Transformers library by Hugging Face for state-of-the-art natural language processing
+
+# Utilities and Helpers
+Flask==2.1.2           # Flask for creating a web application interface
+python-dotenv==0.20.0  # Python-dotenv to read key-value pairs from a .env file and set them as environment variable
+
+# Note: Versions specified are the latest stable releases as of the creation of this file.
+# Ensure compatibility with your Python version and operating system.
+
+# End of requirements.txt
 
