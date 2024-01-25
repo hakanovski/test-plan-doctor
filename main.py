@@ -1,34 +1,36 @@
 import tkinter as tk
-from tkinter import filedialog, messagebox
+from tkinter import filedialog
 
-# Uygulama penceresini oluşturma
-app = tk.Tk()
-app.title("Test Plan Doctor")
+def upload_file():
+    """Handle the file upload process."""
+    global file_path
+    file_path = filedialog.askopenfilename()
+    if file_path:  # Check if a file is selected
+        # Update the label to show the uploaded file's name
+        file_label.config(text="Uploaded File: " + file_path.split('/')[-1])
+        # Display the 'Start to Enhance' button
+        enhance_button.pack()
 
-# Giriş ekranı için metin ve buton
-welcome_label = tk.Label(app, text="Welcome to Test Plan Doctor!\nThis tool helps you enhance your test plans.")
-welcome_label.pack()
+def start_enhancement():
+    """Start the file enhancement process."""
+    # Placeholder for GPT-3 file analysis and enhancement
+    print("Enhancing the file:", file_path)
+    # Future implementation: Analyze and enhance the file using GPT-3
 
-def open_main_interface():
-    # Giriş ekranını kaldır
-    welcome_label.destroy()
-    start_button.destroy()
-    
-    # Ana arayüzün içeriği
-    upload_label = tk.Label(app, text="Upload your test plan in Word, PDF, Excel, or Google Docs format.")
-    upload_label.pack()
+# Create the main window
+root = tk.Tk()
+root.title("Test Plan Doctor")
 
-    def upload_file():
-        file_path = filedialog.askopenfilename()
-        # Dosya yükleme işlemleri burada yapılacak
-        messagebox.showinfo("Uploaded", f"File uploaded: {file_path}")
+# Create and place the upload button
+upload_button = tk.Button(root, text="Upload File", command=upload_file)
+upload_button.pack()
 
-    upload_button = tk.Button(app, text="Upload File", command=upload_file)
-    upload_button.pack()
+# Label to display the name of the uploaded file
+file_label = tk.Label(root, text="No file uploaded.")
+file_label.pack()
 
-start_button = tk.Button(app, text="Start", command=open_main_interface)
-start_button.pack()
+# Button to start the enhancement process, hidden until a file is uploaded
+enhance_button = tk.Button(root, text="Start to Enhance", command=start_enhancement)
 
-# Uygulamayı çalıştır
-app.mainloop()
-
+# Start the GUI event loop
+root.mainloop()
