@@ -6,3 +6,6 @@
 "file_label" is not defined
 "enhance_button" is not defined
 "file_type_var" is not defined
+
+Error reading Excel file: Excel file format cannot be determined, you must specify an engine manually
+
