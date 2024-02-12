@@ -8,7 +8,7 @@ import pdfplumber
 from docx import Document
 
 # OpenAI API Key
-openai.api_key = 'YOUR_API_KEY_HERE'
+openai.api_key = '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'
 
 def gpt3_enhance(content, language="English", max_tokens=500, temperature=0.7, top_p=1):
     """Enhance the content using GPT-3 in the specified language with custom parameters."""
