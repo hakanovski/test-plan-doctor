@@ -7,7 +7,7 @@ import pdfplumber
 from docx import Document
 
 # Set your OpenAI API key
-openai.api_key = 'YOUR_API_KEY_HERE'
+openai.api_key = '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'
 
 # Initialize the main application window
 root = tk.Tk()
@@ -93,4 +93,21 @@ enhance_button.config(command=lambda: start_enhancement(file_type_var.get()))
 # Function to start the file enhancement process
 def start_enhancement(file_type):
     """
-    Start the file enhancement process based on the file type⬤
+    Start the file enhancement process based on the file type.
+    """
+    if file_type == "Excel":
+        df = read_excel(file_path)
+        if df is not None:
+            enhanced_df = gpt3_enhance(df.to_string()) # Example of using GPT-3 to enhance content. Adjust as needed.
+            print(enhanced_df) # Example action. Adjust according to your needs.
+    elif file_type == "PDF":
+        pdf_text = read_pdf(file_path)
+        enhanced_text = gpt3_enhance(pdf_text)
+        print(enhanced_text) # Example action. Adjust according to your needs.
+    elif file_type == "Word":
+        doc_text = read_docx(file_path)
+        enhanced_text = gpt3_enhance(doc_text)
+        print(enhanced_text) # Example action. Adjust according to your needs.
+
+# Start the main application loop
+root.mainloop()
