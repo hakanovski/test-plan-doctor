@@ -1,3 +1,8 @@
 "enhance_excel_content" is not defined
 "save_enhanced_excel" is not defined
 "enhanced_content" is not defined
+
+
+"file_label" is not defined
+"enhance_button" is not defined
+"file_type_var" is not defined
