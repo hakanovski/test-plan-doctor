@@ -14,14 +14,13 @@ root = tk.Tk()
 root.title("Test Plan Doctor")
 root.geometry("800x600")
 
-# Global variables to keep track of the uploaded file path and its type
+# Variables to keep track of the uploaded file path and its type
 file_path = ''
 file_type = ''
 
-# Function to enhance the content using GPT-3
 def gpt3_enhance(content, language="English", max_tokens=500, temperature=0.7, top_p=1):
     """
-    Enhance the content using GPT-3 in the specified language with custom parameters.
+    Enhances the provided content using GPT-3 in the specified language.
     """
     prompt = f"[Translate this test plan to {language}]\n\n{content}" if language != "English" else content
     try:
@@ -37,10 +36,9 @@ def gpt3_enhance(content, language="English", max_tokens=500, temperature=0.7, t
         messagebox.showerror("Error", f"Error during GPT-3 enhancement: {e}")
         return None
 
-# Function to read Excel files
 def read_excel(file_path):
     """
-    Read an Excel file and return its content.
+    Reads an Excel file and returns its content.
     """
     try:
         df = pd.read_excel(file_path)
@@ -49,10 +47,9 @@ def read_excel(file_path):
         messagebox.showerror("Error", f"Error reading Excel file: {e}")
         return None
 
-# Function to read PDF files
 def read_pdf(file_path):
     """
-    Read a PDF file and extract the text.
+    Reads a PDF file and extracts the text.
     """
     text = ''
     with pdfplumber.open(file_path) as pdf:
@@ -60,54 +57,56 @@ def read_pdf(file_path):
             text += page.extract_text() + '\n'
     return text
 
-# Function to read Word documents
 def read_docx(file_path):
     """
-    Read a Word document and extract the text.
+    Reads a Word document and extracts the text.
     """
     doc = Document(file_path)
     return '\n'.join([para.text for para in doc.paragraphs])
 
-# Define the file_type_var, file_label, and enhance_button
-file_type_var = tk.StringVar(value="Excel")
-file_label = tk.Label(root, text="No file uploaded.")
-enhance_button = tk.Button(root, text="Start Enhancement")
-
-# Function to handle file uploads
 def upload_file():
     """
-    Handle the file upload process.
+    Handles the file upload process and sets the file type based on the extension.
     """
-    global file_path
+    global file_path, file_type
     file_path = filedialog.askopenfilename(filetypes=[("Excel Files", "*.xlsx"), ("PDF Files", "*.pdf"), ("Word Files", "*.docx")])
     if file_path:
         file_label.config(text=f"Uploaded File: {os.path.basename(file_path)}")
+        if file_path.endswith('.xlsx'):
+            file_type = 'Excel'
+        elif file_path.endswith('.pdf'):
+            file_type = 'PDF'
+        elif file_path.endswith('.docx'):
+            file_type = 'Word'
         enhance_button.pack()
 
-# Initialize GUI components
+def start_enhancement():
+    """
+    Starts the file enhancement process based on the file type.
+    """
+    global file_type
+    try:
+        if file_type == "Excel":
+            df = read_excel(file_path)
+            # Further processing for Excel...
+        elif file_type == "PDF":
+            pdf_text = read_pdf(file_path)
+            enhanced_text = gpt3_enhance(pdf_text)
+            print(enhanced_text)  # Example action
+        elif file_type == "Word":
+            doc_text = read_docx(file_path)
+            enhanced_text = gpt3_enhance(doc_text)
+            print(enhanced_text)  # Example action
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred: {e}")
+
+# GUI setup
+file_label = tk.Label(root, text="No file uploaded.")
 file_label.pack()
 upload_button = tk.Button(root, text="Upload File", command=upload_file)
 upload_button.pack()
-enhance_button.config(command=lambda: start_enhancement(file_type_var.get()))
-
-# Function to start the file enhancement process
-def start_enhancement(file_type):
-    """
-    Start the file enhancement process based on the file type.
-    """
-    if file_type == "Excel":
-        df = read_excel(file_path)
-        if df is not None:
-            enhanced_df = gpt3_enhance(df.to_string()) # Example of using GPT-3 to enhance content. Adjust as needed.
-            print(enhanced_df) # Example action. Adjust according to your needs.
-    elif file_type == "PDF":
-        pdf_text = read_pdf(file_path)
-        enhanced_text = gpt3_enhance(pdf_text)
-        print(enhanced_text) # Example action. Adjust according to your needs.
-    elif file_type == "Word":
-        doc_text = read_docx(file_path)
-        enhanced_text = gpt3_enhance(doc_text)
-        print(enhanced_text) # Example action. Adjust according to your needs.
+enhance_button = tk.Button(root, text="Start Enhancement", command=start_enhancement)
+# enhance_button is packed in the upload_file function after a file is successfully uploaded
 
 # Start the main application loop
 root.mainloop()
